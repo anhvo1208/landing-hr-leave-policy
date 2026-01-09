@@ -1,384 +1,429 @@
-:root {
-    --primary-blue: #0099ff;
-    --secondary-blue: #40b3ff;
-    --accent-cyan: #00d4ff;
-    --bg-navy: #020617;
-    --card-bg: rgba(15, 23, 42, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --text-main: #f8fafc;
-    --text-muted: #94a3b8;
-}
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J77 HR - Futuristic Leave Policy & AI Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #0066ff;
+            --bg-deep: #020617;
+            --glass: rgba(15, 23, 42, 0.7);
+        }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #e2e8f0;
+            overflow-x: hidden;
+            margin: 0;
+        }
 
-body {
-    font-family: 'Aptos', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--bg-navy);
-    color: var(--text-main);
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    line-height: 1.6;
-}
+        /* Ambient Background Effects */
+        .glow-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
+        }
 
-/* --- BACKGROUND EFFECTS --- */
-#canvas-particles {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-}
+        .ambient-light {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-.bg-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #020617 100%);
-    z-index: -3;
-}
+        /* Waves Animation */
+        .wave-container {
+            position: fixed;
+            bottom: -10%;
+            left: -10%;
+            width: 120%;
+            height: 50%;
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
 
-.wave-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
-    z-index: -1;
-    opacity: 0.3;
-}
+        .wave {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, var(--secondary));
+            border-radius: 43%;
+            animation: rotate 20s linear infinite;
+        }
 
-.wave {
-    position: absolute;
-    bottom: 0;
-    width: 200%;
-    height: 100%;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%230099ff" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
-    background-size: 50% 100px;
-    animation: waveMove 10s linear infinite;
-}
-.wave2 { bottom: 10px; opacity: 0.5; animation: waveMove 15s linear infinite reverse; }
-.wave3 { bottom: 20px; opacity: 0.2; animation: waveMove 20s linear infinite; }
+        .wave:nth-child(2) { animation-duration: 25s; opacity: 0.5; border-radius: 40%; }
+        .wave:nth-child(3) { animation-duration: 30s; opacity: 0.2; border-radius: 45%; }
 
-@keyframes waveMove {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
 
-/* --- ROBOT ASSISTANT --- */
-.robot-wrapper {
-    position: fixed;
-    right: 40px;
-    top: 20%;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    cursor: pointer;
-}
+        /* Glass Cards */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
 
-.robot-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        .glass-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.15);
+            transform: translateY(-5px);
+        }
 
-.robot {
-    width: 120px;
-    height: 150px;
-    animation: float 4s ease-in-out infinite;
-    filter: drop-shadow(0 0 20px rgba(0, 153, 255, 0.4));
-}
+        /* Floating Robot */
+        #robot-container {
+            position: fixed;
+            right: 5%;
+            top: 20%;
+            width: 180px;
+            z-index: 50;
+            animation: floating 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 255, 0.3));
+            cursor: pointer;
+        }
 
-.robot-body { fill: #e2e8f0; }
-.robot-visor { fill: #0f172a; }
-.robot-eye { fill: var(--accent-cyan); animation: blink 3s infinite; }
-.robot-chest-light { fill: var(--primary-blue); animation: pulseHeart 2s infinite; }
-.hr-text { font-family: 'Arial', sans-serif; font-weight: bold; fill: white; font-size: 10px; text-shadow: 0 0 5px #fff; }
-.antenna-glow { fill: var(--accent-cyan); animation: blink 1.5s infinite; }
-.chat-ai-label { background: rgba(0, 153, 255, 0.2); padding: 5px 10px; border-radius: 10px; font-size: 11px; color: white; margin-top: 5px; backdrop-filter: blur(5px); }
+        @keyframes floating {
+            0%, 100% { transform: translateY(0) rotate(2deg); }
+            50% { transform: translateY(-20px) rotate(-2deg); }
+        }
 
-@keyframes float {
-    0%, 100% { transform: translateY(0) rotate(0); }
-    50% { transform: translateY(-20px) rotate(2deg); }
-}
-@keyframes blink {
-    0%, 90%, 100% { opacity: 1; }
-    95% { opacity: 0; }
-}
-@keyframes pulseHeart {
-    0%, 100% { filter: brightness(1) drop-shadow(0 0 2px var(--primary-blue)); }
-    50% { filter: brightness(1.5) drop-shadow(0 0 10px var(--primary-blue)); }
-}
+        .robot-eye { animation: blink 5s infinite; }
+        @keyframes blink {
+            0%, 95%, 100% { transform: scaleY(1); }
+            97% { transform: scaleY(0.1); }
+        }
 
-/* --- AI CHAT BUBBLE --- */
-.chat-ui {
-    position: fixed;
-    right: 170px;
-    top: 20%;
-    width: 300px;
-    max-height: 400px;
-    background: var(--card-bg);
-    backdrop-filter: blur(25px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    display: none;
-    flex-direction: column;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-    z-index: 99;
-}
+        .hr-chest-glow {
+            animation: pulse-hr 2s infinite alternate;
+            fill: #00f2ff;
+            font-weight: 800;
+            font-size: 14px;
+        }
 
-.chat-header {
-    padding: 15px;
-    border-bottom: 1px solid var(--glass-border);
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-}
+        /* AI Chat Window */
+        #ai-chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 5%;
+            width: 350px;
+            height: 500px;
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
 
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 15px;
-    font-size: 0.9rem;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+        /* Particles */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
 
-.msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; }
-.bot-msg { background: rgba(0, 153, 255, 0.1); align-self: flex-start; border: 1px solid rgba(0, 153, 255, 0.2); }
-.user-msg { background: var(--primary-blue); color: white; align-self: flex-end; }
+        /* Nav Item Active */
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(0, 242, 255, 0.1);
+            border-left: 4px solid var(--primary);
+        }
 
-.chat-input-area {
-    padding: 10px;
-    border-top: 1px solid var(--glass-border);
-    display: flex;
-    gap: 8px;
-}
+        /* Loading Spinner */
+        .spinner {
+            border: 2px solid rgba(0, 242, 255, 0.1);
+            border-left-color: var(--primary);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
 
-.chat-input {
-    flex: 1;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
-    border-radius: 10px;
-    padding: 8px;
-    color: white;
-    outline: none;
-}
+    <!-- Background Elements -->
+    <div class="glow-bg"></div>
+    <div class="ambient-light" style="top: -100px; left: -100px;"></div>
+    <div class="ambient-light" style="bottom: -100px; right: -100px;"></div>
+    <div class="wave-container">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+    <canvas id="particle-canvas"></canvas>
 
-/* --- NAVIGATION --- */
-nav {
-    position: sticky;
-    top: 0;
-    width: 100%;
-    padding: 20px 5%;
-    background: rgba(2, 6, 23, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 50;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid var(--glass-border);
-}
+    <!-- AI Robot (Click to Chat) -->
+    <div id="robot-container" onclick="toggleChat()">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <line x1="100" y1="50" x2="100" y2="30" stroke="#00f2ff" stroke-width="3" />
+            <circle cx="100" cy="25" r="5" fill="#00f2ff"><animate attributeName="opacity" values="0.3;1;0.3" dur="2s" repeatCount="indefinite" /></circle>
+            <rect x="60" y="50" width="80" height="70" rx="30" fill="#1e293b" stroke="#00f2ff" stroke-width="2" />
+            <rect x="70" y="65" width="60" height="35" rx="15" fill="#020617" />
+            <circle class="robot-eye" cx="85" cy="82" r="4" fill="#00f2ff" />
+            <circle class="robot-eye" cx="115" cy="82" r="4" fill="#00f2ff" />
+            <path d="M70 120 L130 120 L140 170 L60 170 Z" fill="#1e293b" stroke="#00f2ff" stroke-width="2" />
+            <rect x="80" y="135" width="40" height="20" rx="4" fill="rgba(0,242,255,0.1)" />
+            <text x="100" y="150" text-anchor="middle" class="hr-chest-glow">HR</text>
+            <path d="M70 130 Q50 140 55 160" fill="none" stroke="#00f2ff" stroke-width="2" />
+            <path d="M130 130 Q150 140 145 160" fill="none" stroke="#00f2ff" stroke-width="2" />
+        </svg>
+        <div class="absolute -top-4 -right-4 bg-red-500 text-white text-[10px] px-2 py-1 rounded-full animate-bounce">AI ONLINE</div>
+    </div>
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: 800;
-    background: linear-gradient(to right, var(--primary-blue), var(--accent-cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+    <!-- AI Chat Window -->
+    <div id="ai-chat-window" class="glass-card rounded-2xl overflow-hidden flex flex-col">
+        <div class="p-4 bg-cyan-600/20 border-b border-cyan-500/30 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                <span class="text-sm font-bold text-cyan-400">✨ HR Bot Assistant</span>
+            </div>
+            <button onclick="toggleChat()" class="text-gray-400 hover:text-white">✕</button>
+        </div>
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 text-sm">
+            <div class="bg-blue-600/20 p-3 rounded-lg border border-blue-500/20 text-gray-300">
+                Xin chào! Tôi là trợ lý AI. Bạn muốn biết gì về chính sách nghỉ phép của J77 không?
+            </div>
+        </div>
+        <div class="p-4 border-t border-white/5 bg-black/20">
+            <div class="flex gap-2">
+                <input id="chat-input" type="text" placeholder="Hỏi tôi bất cứ điều gì..." class="flex-1 bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-cyan-500 text-white">
+                <button onclick="askAI()" class="bg-cyan-600 hover:bg-cyan-500 px-3 py-2 rounded-lg transition-colors">
+                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
 
-.nav-links {
-    display: flex;
-    gap: 25px;
-}
+    <!-- Navigation Sidebar -->
+    <nav class="fixed left-0 top-0 h-full w-20 lg:w-64 glass-card border-r border-white/10 z-40 hidden md:flex flex-col py-8 items-center lg:items-start px-4">
+        <div class="mb-12 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-cyan-500 flex items-center justify-center shadow-[0_0_15px_#00f2ff]">
+                <span class="font-bold text-white">J77</span>
+            </div>
+            <span class="hidden lg:block font-bold text-xl tracking-wider text-cyan-400 uppercase">Leave Hub</span>
+        </div>
+        
+        <div class="flex-1 w-full space-y-2">
+            <a href="#intro" class="nav-item group flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-all text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                <span class="hidden lg:block text-sm font-medium">Tổng Quan</span>
+            </a>
+            <a href="#annual-leave" class="nav-item group flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-all text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span class="hidden lg:block text-sm font-medium">Phép Năm</span>
+            </a>
+            <a href="#ai-tools" class="nav-item group flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-all text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <span class="hidden lg:block text-sm font-medium">Công cụ AI ✨</span>
+            </a>
+        </div>
+    </nav>
 
-.nav-links a {
-    color: var(--text-muted);
-    text-decoration: none;
-    font-weight: 500;
-    transition: 0.3s;
-    font-size: 0.9rem;
-    position: relative;
-}
+    <!-- Main Content -->
+    <main class="md:ml-20 lg:ml-64 p-6 lg:p-12 max-w-7xl mx-auto">
+        
+        <header id="intro" class="mb-16">
+            <div class="inline-block px-4 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold tracking-widest uppercase mb-4">Chính sách 2024</div>
+            <h1 class="text-4xl lg:text-6xl font-extrabold mb-6 tracking-tight leading-tight">
+                Hệ Thống <br/>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 italic">Quản Lý Nghỉ Phép</span>
+            </h1>
+        </header>
 
-.nav-links a:hover, .nav-links a.active {
-    color: var(--primary-blue);
-}
+        <!-- AI Tools Section -->
+        <section id="ai-tools" class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-px flex-1 bg-gradient-to-r from-purple-500/50 to-transparent"></div>
+                <h2 class="text-2xl font-bold tracking-widest uppercase text-purple-400">Công cụ AI ✨</h2>
+            </div>
+            
+            <div class="glass-card p-8 rounded-2xl border-purple-500/30">
+                <h3 class="text-xl font-bold mb-4 text-white">✨ Kiểm tra kế hoạch nghỉ phép</h3>
+                <p class="text-gray-400 mb-6 text-sm">Nhập kế hoạch của bạn, AI sẽ đối chiếu với chính sách J77 để tư vấn.</p>
+                <div class="space-y-4 max-w-xl">
+                    <textarea id="ai-plan-input" rows="3" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-purple-500" placeholder="Ví dụ: Tôi muốn nghỉ 5 ngày phép năm từ thứ 2 tuần sau..."></textarea>
+                    <button onclick="analyzePlan()" id="analyze-btn" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 px-6 py-3 rounded-xl font-bold text-sm flex items-center gap-2 transition-all shadow-lg shadow-purple-500/20">
+                        <span>✨ Phân tích kế hoạch</span>
+                        <div id="analyze-spinner" class="spinner hidden"></div>
+                    </button>
+                    <div id="plan-result" class="hidden p-4 rounded-xl bg-white/5 border border-white/10 text-gray-300 text-sm italic"></div>
+                </div>
+            </div>
+        </section>
 
-/* --- MAIN CONTENT --- */
-main {
-    padding: 40px 10%;
-    max-width: 1400px;
-    margin: 0 auto;
-}
+        <!-- Annual Leave Details -->
+        <section id="annual-leave" class="mb-20">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="h-px flex-1 bg-gradient-to-r from-cyan-500/50 to-transparent"></div>
+                <h2 class="text-2xl font-bold tracking-widest uppercase text-cyan-400">Chính sách chi tiết</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-2xl">
+                    <h4 class="text-xl font-bold mb-4 text-white">Phép năm tiêu chuẩn</h4>
+                    <p class="text-gray-400 leading-relaxed">Nhân viên J77 được hưởng 12 ngày phép/năm. Thử việc 02 tháng không được dùng phép, nhưng sẽ được cộng dồn sau khi ký hợp đồng chính thức.</p>
+                </div>
+                <div class="glass-card p-8 rounded-2xl">
+                    <h4 class="text-xl font-bold mb-4 text-white">Chuyển phép năm</h4>
+                    <p class="text-gray-400 leading-relaxed">Số ngày phép dư có thể chuyển sang năm sau nhưng giới hạn thời gian sử dụng đến hết ngày <span class="text-cyan-400 font-bold">31/03</span> hàng năm.</p>
+                </div>
+            </div>
+        </section>
 
-header {
-    text-align: left;
-    margin-bottom: 60px;
-}
+    </main>
 
-header h1 {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    letter-spacing: -1px;
-}
+    <script>
+        const apiKey = ""; // API Key will be injected at runtime
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'j77-leave-policy';
 
-.section-title {
-    margin-bottom: 30px;
-    font-size: 1.5rem;
-    color: var(--secondary-blue);
-}
+        // Toggle Chat Window
+        function toggleChat() {
+            const chat = document.getElementById('ai-chat-window');
+            chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+        }
 
-/* --- GRID SYSTEM --- */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    margin-bottom: 80px;
-}
+        // --- GEMINI API CALL (EXPONENTIAL BACKOFF) ---
+        async function callGemini(prompt, systemPrompt) {
+            let delay = 1000;
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: systemPrompt }] }
+                        })
+                    });
+                    const result = await response.json();
+                    return result.candidates?.[0]?.content?.parts?.[0]?.text;
+                } catch (error) {
+                    if (i === 4) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                }
+            }
+        }
 
-/* --- GLASS CARD --- */
-.card {
-    background: var(--card-bg);
-    backdrop-filter: blur(20px);
-    border-radius: 16px;
-    padding: 30px;
-    border: 1px solid var(--glass-border);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    position: relative;
-    overflow: hidden;
-}
+        // --- FEATURE 1: AI ADVISOR CHAT ---
+        async function askAI() {
+            const input = document.getElementById('chat-input');
+            const messages = document.getElementById('chat-messages');
+            const query = input.value.trim();
+            if (!query) return;
 
-.card:hover {
-    transform: translateY(-10px);
-    border-color: var(--secondary-blue);
-    box-shadow: 0 10px 40px rgba(0, 153, 255, 0.2);
-}
+            // Add user message
+            messages.innerHTML += `<div class="ml-8 bg-cyan-600/10 p-3 rounded-lg border border-cyan-500/10 text-white text-right">${query}</div>`;
+            input.value = '';
+            messages.scrollTop = messages.scrollHeight;
 
-.card-icon {
-    width: 50px;
-    height: 50px;
-    background: rgba(0, 153, 255, 0.1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 20px;
-    color: var(--primary-blue);
-}
+            const systemPrompt = `Bạn là trợ lý HR của J77 English Company. 
+            Dựa trên chính sách: 
+            - 12 ngày phép năm. 
+            - Kết hôn: 3 ngày, Con kết hôn: 1 ngày, Tứ thân phụ mẫu mất: 3 ngày (có lương).
+            - Nghỉ trên 3 ngày báo trước 1 tuần.
+            - Phép dư hết hạn 31/03.
+            Trả lời ngắn gọn, lịch sự, chuyên nghiệp.`;
 
-.card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 15px;
-    color: #fff;
-}
+            const loadingId = Date.now();
+            messages.innerHTML += `<div id="l-${loadingId}" class="mr-8 bg-blue-600/20 p-3 rounded-lg text-gray-400">Đang suy nghĩ...</div>`;
 
-.card li {
-    margin-bottom: 12px;
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    display: flex;
-    align-items: baseline;
-}
+            try {
+                const answer = await callGemini(query, systemPrompt);
+                document.getElementById(`l-${loadingId}`).innerHTML = answer;
+            } catch (err) {
+                document.getElementById(`l-${loadingId}`).innerHTML = "Rất tiếc, tôi gặp sự cố kết nối. Hãy thử lại sau.";
+            }
+            messages.scrollTop = messages.scrollHeight;
+        }
 
-.card li::before {
-    content: '•';
-    color: var(--primary-blue);
-    margin-right: 10px;
-}
+        // --- FEATURE 2: PLAN ANALYZER ---
+        async function analyzePlan() {
+            const input = document.getElementById('ai-plan-input').value.trim();
+            const resultDiv = document.getElementById('plan-result');
+            const btn = document.getElementById('analyze-btn');
+            const spinner = document.getElementById('analyze-spinner');
 
-/* --- AI SPECIAL CARDS --- */
-.ai-card {
-    border: 1px solid var(--accent-cyan);
-    background: rgba(0, 212, 255, 0.05);
-}
+            if (!input) return;
 
-.ai-header {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 20px;
-}
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = "✨ AI đang phân tích kế hoạch của bạn...";
+            spinner.classList.remove('hidden');
 
-.ai-controls {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-}
+            const systemPrompt = `Bạn là chuyên gia tư vấn tuân thủ nội bộ. 
+            Phân tích kế hoạch nghỉ phép của nhân viên. Kiểm tra xem có vi phạm:
+            1. Thời gian báo trước (Nghỉ > 3 ngày báo trước 1 tuần).
+            2. Loại phép (AL, PL, SL).
+            Nếu hợp lệ, hãy chúc họ có kỳ nghỉ vui vẻ. Nếu không, hãy nhắc nhở nhẹ nhàng.`;
 
-.plan-result {
-    margin-top: 20px;
-    font-size: 0.95rem;
-    color: var(--text-main);
-    display: none;
-    padding: 15px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 10px;
-}
+            try {
+                const analysis = await callGemini(input, systemPrompt);
+                resultDiv.innerHTML = `<div class="text-cyan-400 font-bold mb-2">Kết quả phân tích:</div>${analysis}`;
+            } catch (err) {
+                resultDiv.innerHTML = "Không thể phân tích lúc này. Vui lòng kiểm tra lại.";
+            } finally {
+                spinner.classList.add('hidden');
+            }
+        }
 
-/* --- BUTTONS --- */
-.btn-glow {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 24px;
-    background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: 0.3s;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
+        // --- PARTICLES & DECORATION ---
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 0.4 - 0.2;
+                this.speedY = Math.random() * 0.4 - 0.2;
+            }
+            update() {
+                this.x += this.speedX; this.y += this.speedY;
+                if (this.x > canvas.width) this.x = 0; if (this.y > canvas.height) this.y = 0;
+            }
+            draw() {
+                ctx.fillStyle = 'rgba(0, 242, 255, 0.3)';
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for (let i = 0; i < 40; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
 
-.btn-glow:hover {
-    box-shadow: 0 0 20px rgba(0, 153, 255, 0.6);
-    transform: scale(1.02);
-}
-
-/* --- RIPPLE EFFECT --- */
-.ripple {
-    position: absolute;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    transform: scale(0);
-    animation: ripple-animation 0.6s linear;
-    pointer-events: none;
-}
-
-@keyframes ripple-animation {
-    to { transform: scale(4); opacity: 0; }
-}
-
-/* --- LOADING SPINNER --- */
-.loading-dots:after {
-    content: ' .';
-    animation: dots 1.5s steps(5, end) infinite;
-}
-@keyframes dots {
-    0%, 20% { color: rgba(0,0,0,0); text-shadow: .2em 0 0 rgba(0,0,0,0), .4em 0 0 rgba(0,0,0,0); }
-    40% { color: white; text-shadow: .2em 0 0 rgba(0,0,0,0), .4em 0 0 rgba(0,0,0,0); }
-    60% { text-shadow: .2em 0 0 white, .4em 0 0 rgba(0,0,0,0); }
-    80%, 100% { text-shadow: .2em 0 0 white, .4em 0 0 white; }
-}
-
-@media (max-width: 768px) {
-    .nav-links { display: none; }
-    .robot-wrapper { right: 10px; top: auto; bottom: 20px; }
-    .chat-ui { right: 20px; bottom: 180px; top: auto; width: calc(100% - 40px); }
-    header h1 { font-size: 2.2rem; }
-}
+        // Chat Input Enter Key
+        document.getElementById('chat-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') askAI();
+        });
+    </script>
+</body>
+</html>
