@@ -3,121 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR Solution – Giải pháp quản trị nhân sự tối ưu</title>
-    <link rel="stylesheet" href="assets/style.css">
-    <!-- Noto Sans font cho tiếng Việt đẹp hơn -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Vietnamese:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <meta name="description" content="HR Health Dashboard - Real-time workforce intelligence & performance metrics">
+    <title>HR Health Dashboard | Workforce Intelligence</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800&family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Recharts Library -->
+    <script src="https://cdn.jsdelivr.net/npm/recharts@2.5.0/dist/Recharts.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-
-    <!-- Header / Navigation -->
-    <header class="navbar">
-        <div class="container navbar-content">
-            <a href="#" class="logo">HR<span>Solution</span></a>
-            <nav class="nav-links">
-                <a href="#hero">Trang chủ</a>
-                <a href="#services">Dịch vụ</a>
-                <a href="#about">Về chúng tôi</a>
-                <a href="#contact">Liên hệ</a>
-            </nav>
-            <div class="mobile-menu-btn">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">⚡ HR Intelligence</div>
+        <div class="nav-pills">
+            <button class="nav-pill active" data-page="1">Overview</button>
+            <button class="nav-pill" data-page="2">Structure</button>
+            <button class="nav-pill" data-page="3">Attrition</button>
+            <button class="nav-pill" data-page="4">Engagement</button>
+            <button class="nav-pill" data-page="5">Hiring</button>
         </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero">
-        <div class="container hero-wrapper">
-            <div class="hero-text">
-                <h1>Nâng tầm doanh nghiệp bằng <span>con người</span></h1>
-                <p>Chúng tôi cung cấp các giải pháp quản trị nhân sự hiện đại, từ phân tích dữ liệu đến chiến lược phát triển tài năng bền vững.</p>
-                <div class="hero-btns">
-                    <a href="#contact" class="btn btn-primary">Bắt đầu ngay</a>
-                    <a href="#services" class="btn btn-outline">Tìm hiểu thêm</a>
-                </div>
-            </div>
-            <div class="hero-image">
-                <div class="hero-shape"></div>
-                <!-- Placeholder SVG cho hiện đại -->
-                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#3498db" d="M44.7,-76.4C58.1,-69.2,69.2,-58.1,77.3,-44.7C85.4,-31.3,90.5,-15.7,88.5,-0.6C86.5,14.5,77.3,28.9,67.4,41.4C57.4,53.8,46.7,64.2,33.9,71.2C21.1,78.2,6.3,81.8,-9.4,79.8C-25.1,77.8,-41.7,70.2,-55.4,59.3C-69.1,48.4,-79.8,34.3,-84.3,18.5C-88.7,2.8,-86.9,-14.7,-79.8,-30.4C-72.7,-46.1,-60.3,-60.1,-45.5,-66.6C-30.8,-73.2,-15.4,-72.3,0.3,-72.8C16,-73.3,31.3,-83.5,44.7,-76.4Z" transform="translate(100 100)" />
-                </svg>
-            </div>
+        <div class="filter-section">
+            <span class="filter-label">Department:</span>
+            <select class="filter-select" id="departmentFilter">
+                <option value="All">All Departments</option>
+            </select>
         </div>
-    </section>
+    </nav>
 
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Dịch vụ của chúng tôi</h2>
-                <div class="underline"></div>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page 1: Executive Overview -->
+        <div class="page" id="page1">
+            <div class="page-header">
+                <h1>Executive HR Health Overview</h1>
+                <p>Real-time workforce intelligence & performance metrics</p>
             </div>
-            <div class="services-grid">
-                <div class="service-card reveal">
-                    <div class="icon">📊</div>
-                    <h3>Phân tích dữ liệu HR</h3>
-                    <p>Chuyển hóa dữ liệu thô thành những quyết định nhân sự mang tính chiến lược và chính xác.</p>
+
+            <div class="kpi-grid" id="kpi-grid-page1"></div>
+
+            <div class="chart-grid-2">
+                <div class="chart-card">
+                    <h3>Workforce & Attrition Trend</h3>
+                    <div id="chart-timeline-page1" style="width: 100%; height: 300px;"></div>
                 </div>
-                <div class="service-card reveal">
-                    <div class="icon">🚀</div>
-                    <h3>Đào tạo & Phát triển</h3>
-                    <p>Xây dựng lộ trình phát triển kỹ năng cho đội ngũ nhân viên đón đầu xu hướng công nghệ.</p>
-                </div>
-                <div class="service-card reveal">
-                    <div class="icon">🤝</div>
-                    <h3>Tư vấn văn hóa</h3>
-                    <p>Thiết kế môi trường làm việc hạnh phúc, gắn kết và tăng cường hiệu suất làm việc.</p>
+                <div class="chart-card">
+                    <h3>Attrition by Department</h3>
+                    <div id="chart-attrition-dept-page1" style="width: 100%; height: 300px;"></div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container about-wrapper">
-            <div class="about-content reveal">
-                <h2>Về HR Solution</h2>
-                <p>Với hơn 10 năm kinh nghiệm trong lĩnh vực quản trị con người, chúng tôi tin rằng mỗi nhân viên đều là một viên ngọc quý cần được mài giũa đúng cách.</p>
-                <ul class="check-list">
-                    <li>Đội ngũ chuyên gia giàu kinh nghiệm</li>
-                    <li>Công nghệ phân tích hiện đại</li>
-                    <li>Cam kết hiệu quả bền vững</li>
-                </ul>
+        <!-- Page 2: Workforce Structure -->
+        <div class="page hidden" id="page2">
+            <div class="page-header">
+                <h1>Workforce Structure & Demographics</h1>
+                <p>Organizational composition & diversity analysis</p>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid-page2"></div>
+
+            <div class="chart-grid-2">
+                <div class="chart-card chart-card-large">
+                    <h3>Department × Job Level Distribution</h3>
+                    <div id="chart-dept-level-page2" style="width: 100%; height: 350px;"></div>
+                </div>
+
+                <div class="chart-grid-mini">
+                    <div class="chart-card">
+                        <h3>Gender Distribution</h3>
+                        <div id="chart-gender-page2" style="width: 100%; height: 180px;"></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Age Groups</h3>
+                        <div id="chart-age-page2" style="width: 100%; height: 180px;"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="contact-box reveal">
-                <h2>Kết nối với chúng tôi</h2>
-                <p>Hãy để lại thông tin, đội ngũ tư vấn sẽ liên hệ với bạn trong vòng 24 giờ.</p>
-                <form id="contact-form" class="contact-form">
-                    <input type="text" placeholder="Họ và tên" required>
-                    <input type="email" placeholder="Email liên hệ" required>
-                    <textarea placeholder="Nhu cầu của bạn..." rows="5"></textarea>
-                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-                </form>
+        <!-- Page 3: Attrition Analysis -->
+        <div class="page hidden" id="page3">
+            <div class="page-header">
+                <h1>Attrition & Workforce Stability</h1>
+                <p>Turnover trends & retention insights</p>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid-page3"></div>
+
+            <div class="chart-grid-2">
+                <div class="chart-card">
+                    <h3>Attrition by Department</h3>
+                    <div id="chart-attrition-page3" style="width: 100%; height: 300px;"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Hiring vs Attrition Trend</h3>
+                    <div id="chart-hiring-trend-page3" style="width: 100%; height: 300px;"></div>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container footer-content">
-            <p>&copy; 2024 HR Solution. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#">Facebook</a>
-                <a href="#">LinkedIn</a>
+        <!-- Page 4: Engagement & Performance -->
+        <div class="page hidden" id="page4">
+            <div class="page-header">
+                <h1>Engagement, Performance & Well-being</h1>
+                <p>Employee satisfaction & productivity metrics</p>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid-page4"></div>
+
+            <div class="chart-grid-2">
+                <div class="chart-card">
+                    <h3>Satisfaction Scores by Department</h3>
+                    <div id="chart-satisfaction-page4" style="width: 100%; height: 300px;"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Performance vs Job Satisfaction</h3>
+                    <div id="chart-performance-page4" style="width: 100%; height: 300px;"></div>
+                </div>
             </div>
         </div>
-    </footer>
 
-    <script src="assets/app.js"></script>
+        <!-- Page 5: Hiring & Workforce Flow -->
+        <div class="page hidden" id="page5">
+            <div class="page-header">
+                <h1>Hiring & Workforce Flow</h1>
+                <p>Recruitment efficiency & headcount dynamics</p>
+            </div>
+
+            <div class="kpi-grid" id="kpi-grid-page5"></div>
+
+            <div class="chart-grid-2">
+                <div class="chart-card">
+                    <h3>Hiring vs Attrition Over Time</h3>
+                    <div id="chart-hiring-time-page5" style="width: 100%; height: 300px;"></div>
+                </div>
+                <div class="chart-card">
+                    <h3>Time to Hire by Department</h3>
+                    <div id="chart-time-hire-page5" style="width: 100%; height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading HR Data...</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="./assets/app.js"></script>
 </body>
 </html>
